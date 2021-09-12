@@ -1,4 +1,4 @@
-package org.example.database;
+package org.example.model.database;
 
 import com.mysql.cj.jdbc.Driver;
 

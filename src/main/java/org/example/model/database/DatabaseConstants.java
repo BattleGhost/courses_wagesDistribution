@@ -1,4 +1,4 @@
-package org.example.database;
+package org.example.model.database;
 
 public interface DatabaseConstants {
     String URL = "jdbc:mysql://localhost:3306/coursesdb";
