@@ -1,31 +1,33 @@
 package org.example.model.organization.employees;
 
 import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Manager extends Employee{
-    private List<Employee> workers;
+    private Set<Employee> workers;
     private long additionalBonus;
 
     public Manager(int id, String firstName, String middleName, String secondName, Date birthDate,
-                   Date hiringDate, long salary, long salaryBonus) {
-        this(id, firstName, middleName, secondName, birthDate, hiringDate, salary, salaryBonus, new LinkedList<>());
+                   Date hiringDate, long salary, long salaryBonus, int officeId, int departmentId) {
+        this(id, firstName, middleName, secondName, birthDate, hiringDate, salary, salaryBonus,
+                officeId, departmentId, new HashSet<>());
     }
 
     public Manager(int id, String firstName, String middleName, String secondName, Date birthDate,
-                   Date hiringDate, long salary, long salaryBonus, List<Employee> workers) {
-        super(id, firstName, middleName, secondName, birthDate, hiringDate, salary, salaryBonus);
+                   Date hiringDate, long salary, long salaryBonus, int officeId, int departmentId, Set<Employee> workers) {
+        super(id, firstName, middleName, secondName, birthDate, hiringDate, salary, salaryBonus,
+                officeId, departmentId);
         this.type = EmployeeType.MANAGER;
         this.workers = workers;
         this.additionalBonus = 0;
     }
 
-    public List<Employee> getWorkers() {
+    public Set<Employee> getWorkers() {
         return workers;
     }
 
-    public void setWorkers(List<Employee> workers) {
+    public void setWorkers(Set<Employee> workers) {
         this.workers = workers;
     }
 

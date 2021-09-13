@@ -3,25 +3,23 @@ package org.example.model.organization;
 import org.example.model.organization.employees.Employee;
 import org.example.model.organization.employees.Manager;
 
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class Office {
-    private long salaryFund;
-    private long defaultBonus;
-    private long defaultManagerBonus;
-    private List<Employee> employeeList;
+    protected int officeId;
+    protected long salaryFund;
+    protected long defaultBonus;
+    protected long defaultManagerBonus;
+    protected Set<Employee> employeeSet;
+    private Set<Department> departmentSet;
 
-    public Office(long salaryFund, long defaultBonus, long defaultManagerBonus, List<Employee> employeeList) {
+    public Office(int officeId, long salaryFund, long defaultBonus, long defaultManagerBonus) {
         this.salaryFund = salaryFund;
         this.defaultBonus = defaultBonus;
         this.defaultManagerBonus = defaultManagerBonus;
-        this.employeeList = employeeList;
-    }
-
-    public Office(long salaryFund, long defaultBonus, long defaultManagerBonus) {
-        this(salaryFund, defaultBonus, defaultManagerBonus, new LinkedList<>());
+        this.officeId = officeId;
+        this.employeeSet = new HashSet<>();
+        this.departmentSet = new HashSet<>();
     }
 
     public long getSalaryFund() {
@@ -36,8 +34,8 @@ public class Office {
         return defaultManagerBonus;
     }
 
-    public List<Employee> getEmployeeList() {
-        return employeeList;
+    public Set<Employee> getEmployeeSet() {
+        return employeeSet;
     }
 
     public void setSalaryFund(long salaryFund) {
@@ -52,12 +50,28 @@ public class Office {
         this.defaultManagerBonus = defaultManagerBonus;
     }
 
-    public void setEmployeeList(List<Employee> employeeList) {
-        this.employeeList = employeeList;
+    public void setEmployeeSet(Set<Employee> employeeSet) {
+        this.employeeSet = employeeSet;
+    }
+
+    public int getOfficeId() {
+        return officeId;
+    }
+
+    public void setOfficeId(int officeId) {
+        this.officeId = officeId;
+    }
+
+    public Set<Department> getDepartmentSet() {
+        return departmentSet;
+    }
+
+    public void setDepartmentSet(Set<Department> departmentSet) {
+        this.departmentSet = departmentSet;
     }
 
     public void calculateBonus() {
-        for (Employee employee : employeeList) {
+        for (Employee employee : employeeSet) {
             employee.calculateSalaryBonus(new Date(), defaultBonus);
             if (employee instanceof Manager)
                 ((Manager) employee).calculateAdditionalBonus(defaultManagerBonus);
@@ -66,7 +80,7 @@ public class Office {
 
     public long calculateTotalCosts() {
         long totalCosts = 0;
-        for (Employee employee : employeeList) {
+        for (Employee employee : employeeSet) {
             totalCosts += employee.getSalary();
             totalCosts += employee.getSalaryBonus();
             if (employee instanceof Manager)
@@ -77,7 +91,7 @@ public class Office {
 
     public long calculateStandardBonusAmount() {
         long totalBonus = 0;
-        for (Employee employee : employeeList) {
+        for (Employee employee : employeeSet) {
             totalBonus += employee.getSalaryBonus();
         }
         return totalBonus;
@@ -89,14 +103,14 @@ public class Office {
         long remainder = salaryFund - totalCosts;
         switch (scheme) {
             case UNIFORM:
-                long toAdd = remainder / employeeList.size();
-                for (Employee employee: employeeList) {
+                long toAdd = remainder / employeeSet.size();
+                for (Employee employee: employeeSet) {
                     employee.setSalary(employee.getSalary() + toAdd);
                 }
                 break;
             case PROPORTIONAL:
                 long totalSum = totalCosts - calculateStandardBonusAmount();
-                for (Employee employee: employeeList) {
+                for (Employee employee: employeeSet) {
                     employee.setSalary(employee.getSalary() +
                             (long) (remainder * ((float) employee.getSalary() / totalSum)));
                     if (employee instanceof Manager) {
@@ -109,6 +123,35 @@ public class Office {
     }
 
     public void addEmployee(Employee employee) {
-        employeeList.add(employee);
+        employee.setOfficeId(officeId);
+        employeeSet.add(employee);
+    }
+
+    public void removeEmployee(int id) {
+        for (Employee employee : employeeSet) {
+            if (employee.getId() == id) {
+                employeeSet.remove(employee);
+                break;
+            }
+        }
+    }
+
+    public void addDepartment(Department department) {
+        for (Employee employee : department.employeeSet) {
+            employee.setOfficeId(officeId);
+        }
+        department.setOfficeId(officeId);
+        departmentSet.add(department);
+    }
+
+    public void synchronizeEmployeeSetFromDepartments() {
+        employeeSet = new HashSet<>();
+        getEmployeesFromDepartments();
+    }
+
+    public void getEmployeesFromDepartments() {
+        for (Department department : departmentSet) {
+            employeeSet.addAll(department.employeeSet);
+        }
     }
 }

@@ -2,9 +2,12 @@ package org.example.model.organization.employees;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Objects;
 
 public abstract class Employee {
     protected int id;
+    protected int officeId;
+    protected int departmentId;
     protected String firstName;
     protected String middleName;
     protected String secondName;
@@ -15,7 +18,7 @@ public abstract class Employee {
     protected EmployeeType type;
 
     public Employee(int id, String firstName, String middleName, String secondName, Date birthDate,
-                    Date hiringDate, long salary, long salaryBonus) {
+                    Date hiringDate, long salary, long salaryBonus, int officeId, int departmentId) {
         this.id = id;
         this.firstName = firstName;
         this.middleName = middleName;
@@ -24,6 +27,8 @@ public abstract class Employee {
         this.hiringDate = hiringDate;
         this.salary = salary;
         this.salaryBonus = salaryBonus;
+        this.officeId = officeId;
+        this.departmentId = departmentId;
     }
 
     public void calculateSalaryBonus(Date currentDate, long bonusAmount) {
@@ -44,13 +49,16 @@ public abstract class Employee {
            switch (newType) {
                case OTHER:
                    return new Other(employee.id, employee.firstName, employee.middleName, employee.secondName,
-                           employee.birthDate, employee.hiringDate, employee.salary, employee.salaryBonus);
+                           employee.birthDate, employee.hiringDate, employee.salary, employee.salaryBonus,
+                           employee.officeId, employee.departmentId);
                case MANAGER:
                    return new Manager(employee.id, employee.firstName, employee.middleName, employee.secondName,
-                           employee.birthDate, employee.hiringDate, employee.salary, employee.salaryBonus);
+                           employee.birthDate, employee.hiringDate, employee.salary, employee.salaryBonus,
+                           employee.officeId, employee.departmentId);
                case WORKER:
                    return new Worker(employee.id, employee.firstName, employee.middleName, employee.secondName,
-                           employee.birthDate, employee.hiringDate, employee.salary, employee.salaryBonus);
+                           employee.birthDate, employee.hiringDate, employee.salary, employee.salaryBonus,
+                           employee.officeId, employee.departmentId);
            }
         }
         return employee;
@@ -131,5 +139,34 @@ public abstract class Employee {
 
     public void setType(EmployeeType type) {
         this.type = type;
+    }
+
+    public int getOfficeId() {
+        return officeId;
+    }
+
+    public void setOfficeId(int officeId) {
+        this.officeId = officeId;
+    }
+
+    public int getDepartmentId() {
+        return departmentId;
+    }
+
+    public void setDepartmentId(int departmentId) {
+        this.departmentId = departmentId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Employee)) return false;
+        Employee employee = (Employee) o;
+        return id == employee.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
