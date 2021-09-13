@@ -107,4 +107,8 @@ public class Office {
                 break;
         }
     }
+
+    public void addEmployee(Employee employee) {
+        employeeList.add(employee);
+    }
 }
