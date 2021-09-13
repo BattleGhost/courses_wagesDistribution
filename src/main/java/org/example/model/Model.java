@@ -1,5 +1,6 @@
 package org.example.model;
 
+import com.sun.org.apache.xpath.internal.operations.Or;
 import org.example.model.database.DatabaseConnection;
 import org.example.model.database.DatabaseOperations;
 import org.example.model.organization.Department;
@@ -86,6 +87,7 @@ public class Model {
         for (Department department : office.getDepartmentSet()) {
             if (department.getDepartmentId() == departmentId) {
                 Organization.addEmployee(department, employee);
+                Organization.addEmployee(office, employee);
                 break;
             }
         }
@@ -108,5 +110,36 @@ public class Model {
                                      int departmentId, String description) {
         addEmployeeToDepartment(departmentId, new Other(employeeIncrement++, firstName, middleName, secondName,
                 birthDate, hiringDate, salary, salaryBonus, office.getOfficeId(), departmentId, description));
+    }
+
+    public void attachEmployeeToManager(int managerId, int employeeId) {
+        Manager manager = null;
+        Employee employee = null;
+        for (Employee emp : office.getEmployeeSet()) {
+            if (emp instanceof Manager && emp.getId() == managerId) {
+                manager = (Manager) emp;
+            } else if (emp.getId() == employeeId) {
+                employee = emp;
+            }
+        }
+        if (manager != null && employee != null){
+            Organization.attachEmployeeToManager(manager, employee);
+        }
+
+    }
+
+    public void detachEmployeeFromManager(int managerId, int employeeId) {
+        if (managerId == employeeId) {
+            return;
+        }
+        Manager manager = null;
+        for (Employee emp : office.getEmployeeSet()) {
+            if (emp instanceof Manager && emp.getId() == managerId) {
+                manager = (Manager) emp;
+            }
+        }
+        if (manager != null) {
+            Organization.detachEmployeeFromManager(manager, employeeId);
+        }
     }
 }
