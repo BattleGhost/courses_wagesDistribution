@@ -5,23 +5,28 @@ import java.util.Date;
 
 public abstract class Employee {
     protected int id;
-    protected String name;
+    protected String firstName;
+    protected String middleName;
+    protected String secondName;
     protected Date birthDate;
     protected Date hiringDate;
-    protected int salary;
-    protected int salaryBonus;
+    protected long salary;
+    protected long salaryBonus;
     protected EmployeeType type;
 
-    public Employee(int id, String name, Date birthDate, Date hiringDate, int salary, int salaryBonus) {
+    public Employee(int id, String firstName, String middleName, String secondName, Date birthDate,
+                    Date hiringDate, long salary, long salaryBonus) {
         this.id = id;
-        this.name = name;
+        this.firstName = firstName;
+        this.middleName = middleName;
+        this.secondName = secondName;
         this.birthDate = birthDate;
         this.hiringDate = hiringDate;
         this.salary = salary;
         this.salaryBonus = salaryBonus;
     }
 
-    public void calculateSalaryBonus(Date currentDate, int bonusAmount) {
+    public void calculateSalaryBonus(Date currentDate, long bonusAmount) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(currentDate);
         int currentMonth = calendar.get(Calendar.MONTH);
@@ -38,16 +43,93 @@ public abstract class Employee {
         } else {
            switch (newType) {
                case OTHER:
-                   return new Other(employee.id, employee.name, employee.birthDate,
-                           employee.hiringDate, employee.salary, employee.salaryBonus);
+                   return new Other(employee.id, employee.firstName, employee.middleName, employee.secondName,
+                           employee.birthDate, employee.hiringDate, employee.salary, employee.salaryBonus);
                case MANAGER:
-                   return new Manager(employee.id, employee.name, employee.birthDate,
-                           employee.hiringDate, employee.salary, employee.salaryBonus);
+                   return new Manager(employee.id, employee.firstName, employee.middleName, employee.secondName,
+                           employee.birthDate, employee.hiringDate, employee.salary, employee.salaryBonus);
                case WORKER:
-                   return new Worker(employee.id, employee.name, employee.birthDate,
-                           employee.hiringDate, employee.salary, employee.salaryBonus);
+                   return new Worker(employee.id, employee.firstName, employee.middleName, employee.secondName,
+                           employee.birthDate, employee.hiringDate, employee.salary, employee.salaryBonus);
            }
         }
         return employee;
+    }
+
+    @Override
+    public String toString() {
+        return id + " | " + firstName + " " + secondName + " " + middleName;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getMiddleName() {
+        return middleName;
+    }
+
+    public void setMiddleName(String middleName) {
+        this.middleName = middleName;
+    }
+
+    public String getSecondName() {
+        return secondName;
+    }
+
+    public void setSecondName(String secondName) {
+        this.secondName = secondName;
+    }
+
+    public Date getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(Date birthDate) {
+        this.birthDate = birthDate;
+    }
+
+    public Date getHiringDate() {
+        return hiringDate;
+    }
+
+    public void setHiringDate(Date hiringDate) {
+        this.hiringDate = hiringDate;
+    }
+
+    public long getSalary() {
+        return salary;
+    }
+
+    public void setSalary(long salary) {
+        this.salary = salary;
+    }
+
+    public long getSalaryBonus() {
+        return salaryBonus;
+    }
+
+    public void setSalaryBonus(long salaryBonus) {
+        this.salaryBonus = salaryBonus;
+    }
+
+    public EmployeeType getType() {
+        return type;
+    }
+
+    public void setType(EmployeeType type) {
+        this.type = type;
     }
 }

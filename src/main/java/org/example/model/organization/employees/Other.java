@@ -5,14 +5,16 @@ import java.util.Date;
 public class Other extends Employee{
     private String description;
 
-    public Other(int id, String name, Date birthDate, Date hiringDate, int salary, int salaryBonus) {
-        super(id, name, birthDate, hiringDate, salary, salaryBonus);
-        this.type = EmployeeType.OTHER;
+    public Other(int id, String firstName, String middleName, String secondName, Date birthDate,
+                 Date hiringDate, long salary, long salaryBonus) {
+        this(id, firstName, middleName, secondName, birthDate, hiringDate, salary, salaryBonus, "");
+
     }
 
-    public Other(int id, String name, Date birthDate, Date hiringDate, int salary, int salaryBonus,
-                 String description) {
-        this(id, name, birthDate, hiringDate, salary, salaryBonus);
+    public Other(int id, String firstName, String middleName, String secondName, Date birthDate,
+                 Date hiringDate, long salary, long salaryBonus, String description) {
+        super(id, firstName, middleName, secondName, birthDate, hiringDate, salary, salaryBonus);
+        this.type = EmployeeType.OTHER;
         this.description = description;
     }
 
