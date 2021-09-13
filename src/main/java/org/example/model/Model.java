@@ -1,6 +1,5 @@
 package org.example.model;
 
-import com.sun.org.apache.xpath.internal.operations.Or;
 import org.example.model.database.DatabaseConnection;
 import org.example.model.database.DatabaseOperations;
 import org.example.model.organization.Department;

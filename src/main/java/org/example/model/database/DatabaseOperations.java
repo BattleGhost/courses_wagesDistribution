@@ -9,8 +9,6 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.LinkedList;
-import java.util.List;
 
 public class DatabaseOperations {
     public static ResultSet createConnectionAndExecute(DatabaseConnection dbc, String query) throws SQLException {
@@ -42,11 +40,11 @@ public class DatabaseOperations {
                 "" + office.getOfficeId() + ", " + office.getSalaryFund() +
                         ", " + office.getDefaultBonus() + ", " + office.getDefaultManagerBonus()));
 
-        StringBuilder departmentsAppendString = new StringBuilder("(");
-        StringBuilder employeeAppendString = new StringBuilder("(");
-        StringBuilder officeEmployeeAppendString = new StringBuilder("(");
-        StringBuilder departmentEmployeeAppendString = new StringBuilder("(");
-        StringBuilder managerEmployeeAppendString = new StringBuilder("(");
+        StringBuilder departmentsAppendString = new StringBuilder();
+        StringBuilder employeeAppendString = new StringBuilder();
+        StringBuilder officeEmployeeAppendString = new StringBuilder();
+        StringBuilder departmentEmployeeAppendString = new StringBuilder();
+        StringBuilder managerEmployeeAppendString = new StringBuilder();
 
         for (Department department : office.getDepartmentSet()) {
 
@@ -54,21 +52,21 @@ public class DatabaseOperations {
                     .append(department.getSalaryFund()).append(", ")
                     .append(department.getDefaultBonus()).append(", ")
                     .append(department.getDefaultManagerBonus()).append(", ")
-                    .append(department.getDepartmentName()).append("),");
+                    .append("'").append(department.getDepartmentName()).append("'").append("),");
 
             for (Employee employee : department.getEmployeeSet()) {
 
                 employeeAppendString.append("(").append(employee.getId()).append(", ")
                         .append(employee.getOfficeId()).append(", ")
                         .append(employee.getDepartmentId()).append(", ")
-                        .append(employee.getFirstName()).append(", ")
-                        .append(employee.getMiddleName()).append(", ")
-                        .append(employee.getSecondName()).append(", ")
+                        .append("'").append(employee.getFirstName()).append("'").append(", ")
+                        .append("'").append(employee.getMiddleName()).append("'").append(", ")
+                        .append("'").append(employee.getSecondName()).append("'").append(", ")
                         .append(employee.getBirthDate()).append(", ")
                         .append(employee.getHiringDate()).append(", ")
                         .append(employee.getSalary()).append(", ")
                         .append(employee.getSalaryBonus()).append(", ")
-                        .append(employee.getType().name()).append(", ").append("),");
+                        .append("'").append(employee.getType().name()).append("'").append("),");
 
                 officeEmployeeAppendString.append("(")
                         .append(employee.getOfficeId()).append(", ")
@@ -80,39 +78,38 @@ public class DatabaseOperations {
 
                 if (employee instanceof Manager) {
                     for (Employee emp : ((Manager) employee).getWorkers()) {
-                        officeEmployeeAppendString.append("(")
+                        managerEmployeeAppendString.append("(")
                                 .append(employee.getId()).append(", ")
                                 .append(emp.getId()).append(", ").append("),");
                     }
                 }
             }
         }
-        departmentsAppendString.append(")");
-        employeeAppendString.append(")");
-        officeEmployeeAppendString.append(")");
-        departmentEmployeeAppendString.append(")");
-        managerEmployeeAppendString.append(")");
-
-        if (departmentsAppendString.length() > 2) {
+        if (departmentsAppendString.length() > 0) {
             update(dbc, String.format(query_template, "department",
-                    "id, salary_fund, default_bonus, default_manager_bonus, name", departmentsAppendString));
+                    "id, salary_fund, default_bonus, default_manager_bonus, department_name",
+                    departmentsAppendString.substring(1, departmentsAppendString.length()-2)));
         }
-        if (employeeAppendString.length() > 2) {
+        if (employeeAppendString.length() > 0) {
             update(dbc, String.format(query_template, "employee",
                     "id, office_id, department_id, first_name, middle_name, second_name, birthday," +
-                            " hiring_date, salary, salary_bonus, type", employeeAppendString));
+                            " hiring_date, salary, salary_bonus, type",
+                    employeeAppendString.substring(1, employeeAppendString.length()-2)));
         }
-        if (officeEmployeeAppendString.length() > 2) {
+        if (officeEmployeeAppendString.length() > 0) {
             update(dbc, String.format(query_template, "office_employees",
-                    "office_id, employee_id", officeEmployeeAppendString));
+                    "office_id, employee_id",
+                    officeEmployeeAppendString.substring(1, officeEmployeeAppendString.length()-2)));
         }
-        if (departmentEmployeeAppendString.length() > 2) {
+        if (departmentEmployeeAppendString.length() > 0) {
             update(dbc, String.format(query_template, "department_employees",
-                    "department_id, employee_id", departmentEmployeeAppendString));
+                    "department_id, employee_id",
+                    departmentEmployeeAppendString.substring(1, departmentEmployeeAppendString.length()-2)));
         }
-        if (managerEmployeeAppendString.length() > 2) {
+        if (managerEmployeeAppendString.length() > 0) {
             update(dbc, String.format(query_template, "manager_employees",
-                    "manager_id, employee_id", managerEmployeeAppendString));
+                    "manager_id, employee_id",
+                    managerEmployeeAppendString.substring(1, managerEmployeeAppendString.length()-2)));
         }
 
         dbc.closeConnection();
