@@ -15,7 +15,8 @@ public class Manager extends Employee{
     }
 
     public Manager(int id, String firstName, String middleName, String secondName, Date birthDate,
-                   Date hiringDate, long salary, long salaryBonus, int officeId, int departmentId, Set<Employee> workers) {
+                   Date hiringDate, long salary, long salaryBonus, int officeId, int departmentId,
+                   Set<Employee> workers) {
         super(id, firstName, middleName, secondName, birthDate, hiringDate, salary, salaryBonus,
                 officeId, departmentId);
         this.type = EmployeeType.MANAGER;

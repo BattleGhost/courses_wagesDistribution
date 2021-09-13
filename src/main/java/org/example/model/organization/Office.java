@@ -101,6 +101,9 @@ public class Office {
         calculateBonus();
         long totalCosts = calculateTotalCosts();
         long remainder = salaryFund - totalCosts;
+        if (remainder <= 0) {
+            return;
+        }
         switch (scheme) {
             case UNIFORM:
                 long toAdd = remainder / employeeSet.size();

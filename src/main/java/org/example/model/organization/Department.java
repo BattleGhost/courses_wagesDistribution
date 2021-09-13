@@ -33,4 +33,9 @@ public class Department extends Office {
         employee.setDepartmentId(departmentId);
         super.addEmployee(employee);
     }
+
+    @Override
+    public String toString() {
+        return "("+departmentId+") " + departmentName;
+    }
 }

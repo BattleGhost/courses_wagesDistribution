@@ -3,6 +3,7 @@ package org.example.model;
 import org.example.model.organization.Department;
 import org.example.model.organization.Office;
 import org.example.model.organization.employees.Employee;
+import org.example.model.organization.employees.Manager;
 import org.example.model.organization.employees.comparators.ComparatorType;
 import org.example.model.organization.employees.comparators.HiringComparator;
 import org.example.model.organization.employees.comparators.SurnameComparator;
@@ -46,5 +47,13 @@ public class Organization {
                 break;
         }
         return new TreeSet<>(sortedList);
+    }
+
+    public static void attachEmployeeToManager(Manager manager, Employee employee) {
+        manager.addNewWorker(employee);
+    }
+
+    public static void detachEmployeeFromManager(Manager manager, int employeeId) {
+        manager.removeWorker(employeeId);
     }
 }

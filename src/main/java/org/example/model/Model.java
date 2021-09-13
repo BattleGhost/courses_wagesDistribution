@@ -1,5 +1,112 @@
 package org.example.model;
 
-public class Model {
+import org.example.model.database.DatabaseConnection;
+import org.example.model.database.DatabaseOperations;
+import org.example.model.organization.Department;
+import org.example.model.organization.Office;
+import org.example.model.organization.employees.Employee;
+import org.example.model.organization.employees.Manager;
+import org.example.model.organization.employees.Other;
+import org.example.model.organization.employees.Worker;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.*;
+
+public class Model {
+    private Office office;
+    public static int officeIncrement;
+    public static int departmentIncrement;
+    public static int employeeIncrement;
+
+    public Model() {
+        setIncrements();
+    }
+
+    public Model(int officeId) {
+        load(officeId);
+    }
+
+    private static void setIncrements() {
+        try {
+            officeIncrement = getIncrement("SELECT id from office") + 1;
+            departmentIncrement = getIncrement("SELECT id from department") + 1;
+            employeeIncrement = getIncrement("SELECT id from employee") + 1;
+        } catch (SQLException e) {
+            // TODO: 13.09.2021
+            officeIncrement = 1;
+            departmentIncrement = 1;
+            employeeIncrement = 1;
+        }
+    }
+
+    private static int getIncrement(String query) throws SQLException {
+        DatabaseConnection dbc = new DatabaseConnection();
+        ResultSet rs = DatabaseOperations.createConnectionAndExecute(dbc, query);
+        int maximalId = 0;
+        while (rs.next()) {
+            int nextId = rs.getInt("id");
+            if (nextId > maximalId) {
+                maximalId = nextId;
+            }
+        }
+        dbc.closeConnection();
+        return maximalId;
+    }
+
+    public void save() {
+        Objects.requireNonNull(office);
+        DatabaseConnection dbc = new DatabaseConnection();
+        try {
+            DatabaseOperations.saveOrganizationInDB(dbc, office);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // TODO: 13.09.2021
+        }
+    }
+
+    public void load(int officeId) {
+        // TODO: 13.09.2021
+        setIncrements();
+    }
+
+    public void createOffice(long salaryFund, long defaultBonus, long defaultManagerBonus) {
+        office = Organization.createOffice(officeIncrement++, salaryFund, defaultBonus, defaultManagerBonus);
+    }
+
+    public void createDepartmentInOffice(long salaryFund, long defaultBonus, long defaultManagerBonus,
+                                         String departmentName) {
+        Objects.requireNonNull(office);
+        Department department = new Department(office.getOfficeId(), departmentIncrement++, salaryFund,
+                defaultBonus, defaultManagerBonus, departmentName);
+        office.addDepartment(department);
+    }
+
+    private void addEmployeeToDepartment(int departmentId, Employee employee) {
+        for (Department department : office.getDepartmentSet()) {
+            if (department.getDepartmentId() == departmentId) {
+                Organization.addEmployee(department, employee);
+                break;
+            }
+        }
+    }
+
+    public void addWorkerToDepartment(String firstName, String middleName, String secondName, Date birthDate,
+                                      Date hiringDate, long salary, long salaryBonus, int departmentId) {
+        addEmployeeToDepartment(departmentId, new Worker(employeeIncrement++, firstName, middleName, secondName,
+                birthDate, hiringDate, salary, salaryBonus, office.getOfficeId(), departmentId));
+    }
+
+    public void addManagerToDepartment(String firstName, String middleName, String secondName, Date birthDate,
+                                      Date hiringDate, long salary, long salaryBonus, int departmentId) {
+        addEmployeeToDepartment(departmentId, new Manager(employeeIncrement++, firstName, middleName, secondName,
+                birthDate, hiringDate, salary, salaryBonus, office.getOfficeId(), departmentId));
+    }
+
+    public void addOtherToDepartment(String firstName, String middleName, String secondName, Date birthDate,
+                                       Date hiringDate, long salary, long salaryBonus,
+                                     int departmentId, String description) {
+        addEmployeeToDepartment(departmentId, new Other(employeeIncrement++, firstName, middleName, secondName,
+                birthDate, hiringDate, salary, salaryBonus, office.getOfficeId(), departmentId, description));
+    }
 }
