@@ -24,10 +24,6 @@ public class Model {
         setIncrements();
     }
 
-    public Model(int officeId) {
-        load(officeId);
-    }
-
     private static void setIncrements() {
         try {
             officeIncrement = getIncrement("SELECT id from office") + 1;
