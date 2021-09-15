@@ -9,6 +9,7 @@ import org.example.model.organization.employees.Manager;
 import org.example.model.organization.employees.Other;
 import org.example.model.organization.employees.Worker;
 
+import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
@@ -66,7 +67,16 @@ public class Model {
     }
 
     public void load(int officeId) {
-        // TODO: 13.09.2021
+        DatabaseConnection dbc = new DatabaseConnection();
+        try {
+            office = DatabaseOperations.loadOrganizationFromDB(dbc, officeId);
+        } catch (SQLException e) {
+            // TODO: 15.09.2021  
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO: 15.09.2021  
+            e.printStackTrace();
+        }
         setIncrements();
     }
 
@@ -140,5 +150,9 @@ public class Model {
         if (manager != null) {
             Organization.detachEmployeeFromManager(manager, employeeId);
         }
+    }
+
+    public Office getOffice() {
+        return office;
     }
 }
