@@ -20,9 +20,13 @@ public class UnpackedConstants {
 
     public static String MESSAGE_OUTPUT_OPTION_CHOOSE;
     public static String MESSAGE_OUTPUT_OPTION_LOAD;
+    public static String MESSAGE_OUTPUT_OPTION_CREATE;
     public static String MESSAGE_OUTPUT_OPTION_SAVE;
     public static String MESSAGE_OUTPUT_OPTION_INFORMATION;
+    public static String MESSAGE_OUTPUT_OPTION_SHOW_DEPARTMENTS;
+    public static String MESSAGE_OUTPUT_OPTION_SHOW_EMPLOYEES;
     public static String MESSAGE_OUTPUT_OPTION_BACK;
+    public static String MESSAGE_OUTPUT_OPTION_EXIT;
     public static String MESSAGE_OUTPUT_OPTION_RECALCULATION;
     public static String MESSAGE_OUTPUT_OPTION_UNIFORM;
     public static String MESSAGE_OUTPUT_OPTION_PROPORTIONAL;
@@ -80,9 +84,15 @@ public class UnpackedConstants {
         MESSAGE_INPUT_ID_EMPLOYEE = view.getTextFromBundle(GlobalConstants.MESSAGE_INPUT_ID_EMPLOYEE);
         MESSAGE_OUTPUT_OPTION_CHOOSE = view.getTextFromBundle(GlobalConstants.MESSAGE_OUTPUT_OPTION_CHOOSE);
         MESSAGE_OUTPUT_OPTION_LOAD = view.getTextFromBundle(GlobalConstants.MESSAGE_OUTPUT_OPTION_LOAD);
+        MESSAGE_OUTPUT_OPTION_CREATE = view.getTextFromBundle(GlobalConstants.MESSAGE_OUTPUT_OPTION_CREATE);
         MESSAGE_OUTPUT_OPTION_SAVE = view.getTextFromBundle(GlobalConstants.MESSAGE_OUTPUT_OPTION_SAVE);
         MESSAGE_OUTPUT_OPTION_INFORMATION = view.getTextFromBundle(GlobalConstants.MESSAGE_OUTPUT_OPTION_INFORMATION);
+        MESSAGE_OUTPUT_OPTION_SHOW_DEPARTMENTS =
+                view.getTextFromBundle(GlobalConstants.MESSAGE_OUTPUT_OPTION_SHOW_DEPARTMENTS);
+        MESSAGE_OUTPUT_OPTION_SHOW_EMPLOYEES =
+                view.getTextFromBundle(GlobalConstants.MESSAGE_OUTPUT_OPTION_SHOW_EMPLOYEES);
         MESSAGE_OUTPUT_OPTION_BACK = view.getTextFromBundle(GlobalConstants.MESSAGE_OUTPUT_OPTION_BACK);
+        MESSAGE_OUTPUT_OPTION_EXIT = view.getTextFromBundle(GlobalConstants.MESSAGE_OUTPUT_OPTION_EXIT);
         MESSAGE_OUTPUT_OPTION_RECALCULATION =
                 view.getTextFromBundle(GlobalConstants.MESSAGE_OUTPUT_OPTION_RECALCULATION);
         MESSAGE_OUTPUT_OPTION_UNIFORM = view.getTextFromBundle(GlobalConstants.MESSAGE_OUTPUT_OPTION_UNIFORM);

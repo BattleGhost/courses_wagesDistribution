@@ -24,9 +24,13 @@ public interface GlobalConstants {
 
     String MESSAGE_OUTPUT_OPTION_CHOOSE = "message.output.option.choose";
     String MESSAGE_OUTPUT_OPTION_LOAD = "message.output.option.load";
+    String MESSAGE_OUTPUT_OPTION_CREATE = "message.output.option.create";
     String MESSAGE_OUTPUT_OPTION_SAVE = "message.output.option.save";
     String MESSAGE_OUTPUT_OPTION_INFORMATION = "message.output.option.information";
+    String MESSAGE_OUTPUT_OPTION_SHOW_DEPARTMENTS = "message.output.option.show.departments";
+    String MESSAGE_OUTPUT_OPTION_SHOW_EMPLOYEES = "message.output.option.show.employees";
     String MESSAGE_OUTPUT_OPTION_BACK = "message.output.option.back";
+    String MESSAGE_OUTPUT_OPTION_EXIT = "message.output.option.exit";
     String MESSAGE_OUTPUT_OPTION_RECALCULATION = "message.output.option.recalculation";
     String MESSAGE_OUTPUT_OPTION_UNIFORM = "message.output.option.uniform";
     String MESSAGE_OUTPUT_OPTION_PROPORTIONAL = "message.output.option.proportional";
