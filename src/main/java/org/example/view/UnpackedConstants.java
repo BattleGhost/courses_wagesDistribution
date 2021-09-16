@@ -44,6 +44,7 @@ public class UnpackedConstants {
     public static String MESSAGE_OUTPUT_ERROR_MANAGER;
     public static String MESSAGE_OUTPUT_WRONG_DATE;
     public static String MESSAGE_OUTPUT_WRONG_OPTION;
+    public static String MESSAGE_OUTPUT_WRONG_DATA;
     public static String MESSAGE_OUTPUT_SUCCESS;
 
     public static String MESSAGE_CONSTANT_SPACE;
@@ -116,6 +117,7 @@ public class UnpackedConstants {
         MESSAGE_OUTPUT_ERROR_MANAGER = view.getTextFromBundle(GlobalConstants.MESSAGE_OUTPUT_ERROR_MANAGER);
         MESSAGE_OUTPUT_WRONG_DATE = view.getTextFromBundle(GlobalConstants.MESSAGE_OUTPUT_WRONG_DATE);
         MESSAGE_OUTPUT_WRONG_OPTION = view.getTextFromBundle(GlobalConstants.MESSAGE_OUTPUT_WRONG_OPTION);
+        MESSAGE_OUTPUT_WRONG_DATA =  view.getTextFromBundle(GlobalConstants.MESSAGE_OUTPUT_WRONG_DATA);
         MESSAGE_OUTPUT_SUCCESS = view.getTextFromBundle(GlobalConstants.MESSAGE_OUTPUT_SUCCESS);
         MESSAGE_CONSTANT_SPACE = view.getTextFromBundle(GlobalConstants.MESSAGE_CONSTANT_SPACE);
         MESSAGE_CONSTANT_COLON = view.getTextFromBundle(GlobalConstants.MESSAGE_CONSTANT_COLON);

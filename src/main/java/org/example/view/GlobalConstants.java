@@ -48,6 +48,7 @@ public interface GlobalConstants {
     String MESSAGE_OUTPUT_ERROR_MANAGER = "message.output.error.manager";
     String MESSAGE_OUTPUT_WRONG_DATE = "message.output.wrong.date";
     String MESSAGE_OUTPUT_WRONG_OPTION = "message.output.wrong.option";
+    String MESSAGE_OUTPUT_WRONG_DATA = "message.output.wrong.data";
     String MESSAGE_OUTPUT_SUCCESS = "message.output.success";
 
     String MESSAGE_CONSTANT_SPACE = "message.constant.space";

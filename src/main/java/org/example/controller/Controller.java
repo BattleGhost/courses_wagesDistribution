@@ -6,6 +6,7 @@ import org.example.view.View;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Scanner;
 
 public class Controller {
     private Model model;
@@ -23,11 +24,88 @@ public class Controller {
     }
 
     public void processUser() {
-        showOptions();
+        Scanner scanner = new Scanner(System.in);
+        chooseOption(scanner);
     }
 
-    private void showOptions() {
-        view.showMessage(UnpackedConstants.MESSAGE_OUTPUT_OPTION_CHOOSE);
+    private void chooseOption(Scanner scanner) {
+        int chosenOption = showOptions(scanner);
+        switch (currentStage) {
+            case START:
+                switch (chosenOption) {
+                    case 0:
+                        return;
+                    case 1:
+                        OrganizationController.processOfficeCreation();
+                        currentStage = Stage.OFFICE;
+                        break;
+                    case 2:
+                        OrganizationController.processOfficeLoad();
+                        currentStage = Stage.OFFICE;
+                        break;
+                }
+                break;
+            case OFFICE:
+                switch (chosenOption) {
+                    case 0:
+                        currentStage = Stage.START;
+                    case 1:
+                        OrganizationController.processOfficeInformation();
+                        break;
+                    case 2:
+                        OrganizationController.processDepartmentsShowcase();
+                        currentStage = Stage.DEPARTMENT;
+                        break;
+                    case 3:
+                        OrganizationController.processRecalculation();
+                        break;
+                    case 4:
+                        OrganizationController.processDepartmentAddition();
+                        break;
+                }
+                break;
+            case DEPARTMENT:
+                switch (chosenOption) {
+                    case 0:
+                        currentStage = Stage.OFFICE;
+                    case 1:
+                        OrganizationController.processDepartmentsInformation();
+                        break;
+                    case 2:
+                        OrganizationController.processEmployeeShowcase();
+                        currentStage = Stage.EMPLOYEE;
+                        break;
+                    case 3:
+                        OrganizationController.processRecalculation();
+                        break;
+                    case 4:
+                        OrganizationController.processEmployeeAddition();
+                        break;
+                    case 5:
+                        OrganizationController.processEmployeeDeletion();
+                        break;
+                }
+                break;
+            case EMPLOYEE:
+                switch (chosenOption) {
+                    case 0:
+                        currentStage = Stage.DEPARTMENT;
+                    case 1:
+                        OrganizationController.processEmployeeInformation();
+                        break;
+                    case 2:
+                        OrganizationController.processManagerAttach();
+                        break;
+                    case 3:
+                        OrganizationController.processManagerDetach();
+                        break;
+                }
+                break;
+        }
+        chooseOption(scanner);
+    }
+
+    private int showOptions(Scanner scanner) {
         Map<Integer, String> options = new LinkedHashMap<>();
         switch (currentStage) {
             case START:
@@ -57,7 +135,27 @@ public class Controller {
                 options.put(0, UnpackedConstants.MESSAGE_OUTPUT_OPTION_BACK);
                 break;
         }
+        printAvailableOptions(options);
+        int chosenOption = getUserInput(scanner, options);
+        while (!options.containsKey(chosenOption)) {
+            view.showMessage(UnpackedConstants.MESSAGE_OUTPUT_WRONG_OPTION);
+            printAvailableOptions(options);
+            chosenOption = getUserInput(scanner, options);
+        }
+        return chosenOption;
+    }
 
+    private int getUserInput(Scanner scanner, Map<Integer, String> options) {
+        while (!scanner.hasNextInt()) {
+            view.showMessage(UnpackedConstants.MESSAGE_OUTPUT_WRONG_DATA);
+            printAvailableOptions(options);
+            scanner.next();
+        }
+        return scanner.nextInt();
+    }
+
+    private void printAvailableOptions(Map<Integer, String> options) {
+        view.showMessage(UnpackedConstants.MESSAGE_OUTPUT_OPTION_CHOOSE);
         for (Map.Entry<Integer, String> entry : options.entrySet()) {
             view.showMessage(view.concatStrings(UnpackedConstants.MESSAGE_CONSTANT_SQUARE_BRACKET_OPEN,
                     entry.getKey().toString(), UnpackedConstants.MESSAGE_CONSTANT_SQUARE_BRACKET_CLOSE,
