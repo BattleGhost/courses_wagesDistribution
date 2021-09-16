@@ -11,6 +11,7 @@ import java.util.Scanner;
 public class Controller {
     private Model model;
     private View view;
+    private OrganizationController organizationController;
     private Stage currentStage;
 
     private enum Stage {
@@ -21,6 +22,7 @@ public class Controller {
         this.model = model;
         this.view = view;
         this.currentStage = Stage.START;
+        this.organizationController = new OrganizationController(model, view);
     }
 
     public void processUser() {
@@ -36,12 +38,13 @@ public class Controller {
                     case 0:
                         return;
                     case 1:
-                        OrganizationController.processOfficeCreation();
+                        organizationController.processOfficeCreation(scanner);
                         currentStage = Stage.OFFICE;
                         break;
                     case 2:
-                        OrganizationController.processOfficeLoad();
-                        currentStage = Stage.OFFICE;
+                        if (organizationController.processOfficeLoad(scanner)) {
+                            currentStage = Stage.OFFICE;
+                        }
                         break;
                 }
                 break;
@@ -49,18 +52,20 @@ public class Controller {
                 switch (chosenOption) {
                     case 0:
                         currentStage = Stage.START;
+                        break;
                     case 1:
-                        OrganizationController.processOfficeInformation();
+                        organizationController.processOfficeInformation();
                         break;
                     case 2:
-                        OrganizationController.processDepartmentsShowcase();
-                        currentStage = Stage.DEPARTMENT;
+                        if (organizationController.processDepartmentsShowcase(scanner)) {
+                            currentStage = Stage.DEPARTMENT;
+                        }
                         break;
                     case 3:
-                        OrganizationController.processRecalculation();
+                        organizationController.processOfficeRecalculation(scanner);
                         break;
                     case 4:
-                        OrganizationController.processDepartmentAddition();
+                        organizationController.processDepartmentAddition();
                         break;
                 }
                 break;
@@ -68,21 +73,22 @@ public class Controller {
                 switch (chosenOption) {
                     case 0:
                         currentStage = Stage.OFFICE;
+                        break;
                     case 1:
-                        OrganizationController.processDepartmentsInformation();
+                        organizationController.processDepartmentsInformation();
                         break;
                     case 2:
-                        OrganizationController.processEmployeeShowcase();
+                        organizationController.processEmployeeShowcase();
                         currentStage = Stage.EMPLOYEE;
                         break;
                     case 3:
-                        OrganizationController.processRecalculation();
+                        organizationController.processDepartmentRecalculation(scanner);
                         break;
                     case 4:
-                        OrganizationController.processEmployeeAddition();
+                        organizationController.processEmployeeAddition();
                         break;
                     case 5:
-                        OrganizationController.processEmployeeDeletion();
+                        organizationController.processEmployeeDeletion();
                         break;
                 }
                 break;
@@ -90,14 +96,15 @@ public class Controller {
                 switch (chosenOption) {
                     case 0:
                         currentStage = Stage.DEPARTMENT;
+                        break;
                     case 1:
-                        OrganizationController.processEmployeeInformation();
+                        organizationController.processEmployeeInformation();
                         break;
                     case 2:
-                        OrganizationController.processManagerAttach();
+                        organizationController.processManagerAttach();
                         break;
                     case 3:
-                        OrganizationController.processManagerDetach();
+                        organizationController.processManagerDetach();
                         break;
                 }
                 break;

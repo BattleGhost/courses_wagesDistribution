@@ -22,6 +22,12 @@ public class View {
         System.out.println(message);
     }
 
+    public void indentLines(int number) {
+        for (int i = 0; i < number; i++) {
+            System.out.println();
+        }
+    }
+
     public String getTextFromBundle(String key) {
         return this.resourceBundle.getString(key);
     }

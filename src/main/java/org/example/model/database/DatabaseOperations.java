@@ -13,6 +13,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DatabaseOperations {
     public static ResultSet createConnectionAndExecute(DatabaseConnection dbc, String query) throws SQLException {
@@ -278,6 +280,18 @@ public class DatabaseOperations {
         dbc.closeConnection();
 
         return office;
+    }
+
+    public static List<Integer> getOfficesIds(DatabaseConnection dbc) throws SQLException {
+        String query = "SELECT id FROM office";
+        ResultSet result = createConnectionAndExecute(dbc, query);
+        List<Integer> ids = new ArrayList<>();
+        while (result.next()) {
+            ids.add(result.getInt("id"));
+        }
+
+        dbc.closeConnection();
+        return ids;
     }
 
     private static String getUpdateString(String values) {

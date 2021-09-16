@@ -17,6 +17,8 @@ public class UnpackedConstants {
     public static String MESSAGE_INPUT_ID_DEPARTMENT;
     public static String MESSAGE_INPUT_ID_MANAGER;
     public static String MESSAGE_INPUT_ID_EMPLOYEE;
+    public static String MESSAGE_INPUT_RECALCULATION_SCHEME;
+    public static String MESSAGE_INPUT_SORT_SCHEME;
 
     public static String MESSAGE_OUTPUT_OPTION_CHOOSE;
     public static String MESSAGE_OUTPUT_OPTION_LOAD;
@@ -39,6 +41,15 @@ public class UnpackedConstants {
     public static String MESSAGE_OUTPUT_OPTION_MANAGER_ATTACH;
     public static String MESSAGE_OUTPUT_OPTION_MANAGER_DETACH;
     public static String MESSAGE_OUTPUT_OPTION_EMPLOYEE_CHANGE_TYPE;
+
+    public static String MESSAGE_OUTPUT_KEYWORDS_LIST;
+    public static String MESSAGE_OUTPUT_KEYWORDS_LIST_EMPTY;
+    public static String MESSAGE_OUTPUT_KEYWORDS_OFFICES;
+    public static String MESSAGE_OUTPUT_KEYWORDS_DEPARTMENTS;
+    public static String MESSAGE_OUTPUT_KEYWORDS_MANAGERS;
+    public static String MESSAGE_OUTPUT_KEYWORDS_EMPLOYEES;
+    public static String MESSAGE_OUTPUT_KEYWORDS_SCHEME_RECALCULATION;
+    public static String MESSAGE_OUTPUT_KEYWORDS_SCHEME_SORT;
 
     public static String MESSAGE_OUTPUT_ERROR_DB;
     public static String MESSAGE_OUTPUT_ERROR_MANAGER;
@@ -83,6 +94,8 @@ public class UnpackedConstants {
         MESSAGE_INPUT_ID_DEPARTMENT = view.getTextFromBundle(GlobalConstants.MESSAGE_INPUT_ID_DEPARTMENT);
         MESSAGE_INPUT_ID_MANAGER = view.getTextFromBundle(GlobalConstants.MESSAGE_INPUT_ID_MANAGER);
         MESSAGE_INPUT_ID_EMPLOYEE = view.getTextFromBundle(GlobalConstants.MESSAGE_INPUT_ID_EMPLOYEE);
+        MESSAGE_INPUT_RECALCULATION_SCHEME = view.getTextFromBundle(GlobalConstants.MESSAGE_INPUT_RECALCULATION_SCHEME);
+        MESSAGE_INPUT_SORT_SCHEME = view.getTextFromBundle(GlobalConstants.MESSAGE_INPUT_SORT_SCHEME);
         MESSAGE_OUTPUT_OPTION_CHOOSE = view.getTextFromBundle(GlobalConstants.MESSAGE_OUTPUT_OPTION_CHOOSE);
         MESSAGE_OUTPUT_OPTION_LOAD = view.getTextFromBundle(GlobalConstants.MESSAGE_OUTPUT_OPTION_LOAD);
         MESSAGE_OUTPUT_OPTION_CREATE = view.getTextFromBundle(GlobalConstants.MESSAGE_OUTPUT_OPTION_CREATE);
@@ -113,6 +126,17 @@ public class UnpackedConstants {
                 view.getTextFromBundle(GlobalConstants.MESSAGE_OUTPUT_OPTION_MANAGER_DETACH);
         MESSAGE_OUTPUT_OPTION_EMPLOYEE_CHANGE_TYPE =
                 view.getTextFromBundle(GlobalConstants.MESSAGE_OUTPUT_OPTION_EMPLOYEE_CHANGE_TYPE);
+        MESSAGE_OUTPUT_KEYWORDS_LIST = view.getTextFromBundle(GlobalConstants.MESSAGE_OUTPUT_KEYWORDS_LIST);
+        MESSAGE_OUTPUT_KEYWORDS_LIST_EMPTY = view.getTextFromBundle(GlobalConstants.MESSAGE_OUTPUT_KEYWORDS_LIST_EMPTY);
+        MESSAGE_OUTPUT_KEYWORDS_OFFICES = view.getTextFromBundle(GlobalConstants.MESSAGE_OUTPUT_KEYWORDS_OFFICES);
+        MESSAGE_OUTPUT_KEYWORDS_DEPARTMENTS =
+                view.getTextFromBundle(GlobalConstants.MESSAGE_OUTPUT_KEYWORDS_DEPARTMENTS);
+        MESSAGE_OUTPUT_KEYWORDS_MANAGERS = view.getTextFromBundle(GlobalConstants.MESSAGE_OUTPUT_KEYWORDS_MANAGERS);
+        MESSAGE_OUTPUT_KEYWORDS_EMPLOYEES = view.getTextFromBundle(GlobalConstants.MESSAGE_OUTPUT_KEYWORDS_EMPLOYEES);
+        MESSAGE_OUTPUT_KEYWORDS_SCHEME_RECALCULATION =
+                view.getTextFromBundle(GlobalConstants.MESSAGE_OUTPUT_KEYWORDS_SCHEME_RECALCULATION);
+        MESSAGE_OUTPUT_KEYWORDS_SCHEME_SORT =
+                view.getTextFromBundle(GlobalConstants.MESSAGE_OUTPUT_KEYWORDS_SCHEME_SORT);
         MESSAGE_OUTPUT_ERROR_DB = view.getTextFromBundle(GlobalConstants.MESSAGE_OUTPUT_ERROR_DB);
         MESSAGE_OUTPUT_ERROR_MANAGER = view.getTextFromBundle(GlobalConstants.MESSAGE_OUTPUT_ERROR_MANAGER);
         MESSAGE_OUTPUT_WRONG_DATE = view.getTextFromBundle(GlobalConstants.MESSAGE_OUTPUT_WRONG_DATE);

@@ -83,7 +83,7 @@ public class Model {
     public void createDepartmentInOffice(long salaryFund, long defaultBonus, long defaultManagerBonus,
                                          String departmentName) {
         Objects.requireNonNull(office);
-        Department department = new Department(office.getOfficeId(), departmentIncrement++, salaryFund,
+        Department department = Organization.createDepartment(office.getOfficeId(), departmentIncrement++, salaryFund,
                 defaultBonus, defaultManagerBonus, departmentName);
         office.addDepartment(department);
     }
@@ -146,6 +146,17 @@ public class Model {
         if (manager != null) {
             Organization.detachEmployeeFromManager(manager, employeeId);
         }
+    }
+
+    public List<Integer> getAllOffices() {
+        DatabaseConnection dbc = new DatabaseConnection();
+        try {
+            return DatabaseOperations.getOfficesIds(dbc);
+        } catch (SQLException e) {
+            // TODO: 16.09.2021
+            e.printStackTrace();
+        }
+        return new ArrayList<>();
     }
 
     public Office getOffice() {

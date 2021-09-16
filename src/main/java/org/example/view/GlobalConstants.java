@@ -21,6 +21,8 @@ public interface GlobalConstants {
     String MESSAGE_INPUT_ID_DEPARTMENT = "message.input.id.department";
     String MESSAGE_INPUT_ID_MANAGER = "message.input.id.manager";
     String MESSAGE_INPUT_ID_EMPLOYEE = "message.input.id.employee";
+    String MESSAGE_INPUT_RECALCULATION_SCHEME = "message.input.recalculation.scheme";
+    String MESSAGE_INPUT_SORT_SCHEME = "message.input.sort.scheme";
 
     String MESSAGE_OUTPUT_OPTION_CHOOSE = "message.output.option.choose";
     String MESSAGE_OUTPUT_OPTION_LOAD = "message.output.option.load";
@@ -43,6 +45,15 @@ public interface GlobalConstants {
     String MESSAGE_OUTPUT_OPTION_MANAGER_ATTACH = "message.output.option.manager.attach";
     String MESSAGE_OUTPUT_OPTION_MANAGER_DETACH = "message.output.option.manager.detach";
     String MESSAGE_OUTPUT_OPTION_EMPLOYEE_CHANGE_TYPE = "message.output.option.employee.change.type";
+
+    String MESSAGE_OUTPUT_KEYWORDS_LIST = "message.output.keywords.list";
+    String MESSAGE_OUTPUT_KEYWORDS_LIST_EMPTY = "message.output.keywords.list.empty";
+    String MESSAGE_OUTPUT_KEYWORDS_OFFICES = "message.output.keywords.offices";
+    String MESSAGE_OUTPUT_KEYWORDS_DEPARTMENTS = "message.output.keywords.departments";
+    String MESSAGE_OUTPUT_KEYWORDS_MANAGERS = "message.output.keywords.managers";
+    String MESSAGE_OUTPUT_KEYWORDS_EMPLOYEES = "message.output.keywords.employees";
+    String MESSAGE_OUTPUT_KEYWORDS_SCHEME_RECALCULATION = "message.output.keywords.scheme.recalculation";
+    String MESSAGE_OUTPUT_KEYWORDS_SCHEME_SORT = "message.output.keywords.scheme.sort";
 
     String MESSAGE_OUTPUT_ERROR_DB = "message.output.error.db";
     String MESSAGE_OUTPUT_ERROR_MANAGER = "message.output.error.manager";

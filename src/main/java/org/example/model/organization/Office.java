@@ -157,4 +157,14 @@ public class Office {
             employeeSet.addAll(department.employeeSet);
         }
     }
+
+    @Override
+    public String toString() {
+        return "Office #" + officeId +
+                "\nSalary Fund: " + salaryFund +
+                "\nDefault Employee Bonus: " + defaultBonus +
+                "\nDefault Manager Bonus: " + defaultManagerBonus +
+                "\nDepartments amount: " + departmentSet.size() +
+                "\nEmployees amount: " + employeeSet.size();
+    }
 }
