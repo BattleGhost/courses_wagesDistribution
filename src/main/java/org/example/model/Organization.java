@@ -3,6 +3,7 @@ package org.example.model;
 import org.example.model.organization.Department;
 import org.example.model.organization.Office;
 import org.example.model.organization.employees.Employee;
+import org.example.model.organization.employees.EmployeeType;
 import org.example.model.organization.employees.Manager;
 import org.example.model.organization.employees.comparators.ComparatorType;
 import org.example.model.organization.employees.comparators.HiringComparator;
@@ -55,5 +56,9 @@ public class Organization {
 
     public static void detachEmployeeFromManager(Manager manager, int employeeId) {
         manager.removeWorker(employeeId);
+    }
+
+    public static Employee changeType(Employee employee, EmployeeType newType) {
+        return Employee.changeType(employee, newType);
     }
 }

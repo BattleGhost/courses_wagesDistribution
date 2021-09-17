@@ -4,10 +4,7 @@ import org.example.model.database.DatabaseConnection;
 import org.example.model.database.DatabaseOperations;
 import org.example.model.organization.Department;
 import org.example.model.organization.Office;
-import org.example.model.organization.employees.Employee;
-import org.example.model.organization.employees.Manager;
-import org.example.model.organization.employees.Other;
-import org.example.model.organization.employees.Worker;
+import org.example.model.organization.employees.*;
 
 import java.io.IOException;
 import java.sql.ResultSet;
@@ -155,6 +152,18 @@ public class Model {
         }
         if (manager != null) {
             Organization.detachEmployeeFromManager(manager, employeeId);
+        }
+    }
+
+    public void changeEmployeeType(Department department, int employeeId, EmployeeType newType) {
+        for (Employee employee : office.getEmployeeSet()) {
+            if (employee.getId() == employeeId) {
+                Organization.removeEmployee(office, employeeId);
+                Organization.removeEmployee(department, employeeId);
+                Organization.addEmployee(office, Organization.changeType(employee, newType));
+                Organization.addEmployee(department, Organization.changeType(employee, newType));
+                break;
+            }
         }
     }
 

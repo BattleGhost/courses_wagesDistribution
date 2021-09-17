@@ -6,6 +6,7 @@ import org.example.model.organization.Office;
 import org.example.model.organization.RecalculationScheme;
 import org.example.model.organization.employees.Employee;
 import org.example.model.organization.employees.EmployeeType;
+import org.example.model.organization.employees.Manager;
 import org.example.view.UnpackedConstants;
 import org.example.view.View;
 
@@ -164,7 +165,7 @@ public class OrganizationController {
 
     public boolean processEmployeeShowcase(Scanner scanner) {
         if (currentDepartment != null) {
-            Set<Employee> availableEmployees = currentDepartment.getEmployeeSet();
+            Set<Employee> availableEmployees = new HashSet<>(currentDepartment.getEmployeeSet());
             Set<Integer> availableEmployeesIds = new LinkedHashSet<>();
             for (Employee employee: availableEmployees) {
                 availableEmployeesIds.add(employee.getId());
@@ -252,35 +253,7 @@ public class OrganizationController {
         long salary = Long.parseLong(getUserData(scanner, UnpackedConstants.MESSAGE_INPUT_EMPLOYEE_SALARY,
                 UnpackedConstants.INPUT_INTEGERS_POSITIVE_REGEXP));
 
-        List<Integer> availablePositions = Arrays.asList(EmployeeType.WORKER.ordinal(), EmployeeType.MANAGER.ordinal(),
-                EmployeeType.OTHER.ordinal());
-
-        int chosenId;
-        view.showMessage(view.concatStrings(UnpackedConstants.MESSAGE_OUTPUT_KEYWORDS_LIST,
-                UnpackedConstants.MESSAGE_CONSTANT_COLON, UnpackedConstants.MESSAGE_CONSTANT_SPACE));
-        view.showMessage(view.concatStrings(UnpackedConstants.MESSAGE_CONSTANT_SQUARE_BRACKET_OPEN,
-                availablePositions.get(0).toString(), UnpackedConstants.MESSAGE_CONSTANT_SQUARE_BRACKET_CLOSE,
-                UnpackedConstants.MESSAGE_CONSTANT_SPACE, UnpackedConstants.MESSAGE_OUTPUT_OPTION_EMPLOYEE_WORKER));
-        view.showMessage(view.concatStrings(UnpackedConstants.MESSAGE_CONSTANT_SQUARE_BRACKET_OPEN,
-                availablePositions.get(1).toString(), UnpackedConstants.MESSAGE_CONSTANT_SQUARE_BRACKET_CLOSE,
-                UnpackedConstants.MESSAGE_CONSTANT_SPACE, UnpackedConstants.MESSAGE_OUTPUT_OPTION_EMPLOYEE_MANAGER));
-        view.showMessage(view.concatStrings(UnpackedConstants.MESSAGE_CONSTANT_SQUARE_BRACKET_OPEN,
-                availablePositions.get(2).toString(), UnpackedConstants.MESSAGE_CONSTANT_SQUARE_BRACKET_CLOSE,
-                UnpackedConstants.MESSAGE_CONSTANT_SPACE, UnpackedConstants.MESSAGE_OUTPUT_OPTION_EMPLOYEE_OTHER));
-        do {
-            chosenId = Integer.parseInt(getUserData(scanner,
-                    UnpackedConstants.MESSAGE_OUTPUT_OPTION_CHOOSE,
-                    UnpackedConstants.MESSAGE_INPUT_EMPLOYEE_TYPE,
-                    UnpackedConstants.MESSAGE_OUTPUT_WRONG_DATA,
-                    UnpackedConstants.INPUT_INTEGERS_POSITIVE_REGEXP));
-
-            if (!availablePositions.contains(chosenId)) {
-                view.showMessage(UnpackedConstants.MESSAGE_OUTPUT_WRONG_OPTION);
-            }
-
-        } while (!availablePositions.contains(chosenId));
-
-        EmployeeType employeeType = EmployeeType.values()[chosenId];
+        EmployeeType employeeType = getEmployeeType(scanner);
 
         if (currentDepartment != null) {
             switch (employeeType) {
@@ -318,14 +291,93 @@ public class OrganizationController {
         }
     }
 
-    public void processManagerAttach() {
-
+    public void processManagerAttach(Scanner scanner) {
+        if (currentEmployee != null) {
+            if (currentEmployee instanceof Manager) {
+                if (currentDepartment != null) {
+                    Set<Employee> availableEmployees = new HashSet<>(currentDepartment.getEmployeeSet());
+                    availableEmployees.remove(currentEmployee);
+                    availableEmployees.removeAll(((Manager) currentEmployee).getWorkers());
+                    Set<Integer> availableEmployeesIds = new LinkedHashSet<>();
+                    for (Employee employee : availableEmployees) {
+                        availableEmployeesIds.add(employee.getId());
+                    }
+                    if (availableEmployees.isEmpty()) {
+                        view.showMessage(view.concatStrings(UnpackedConstants.MESSAGE_OUTPUT_KEYWORDS_LIST_EMPTY,
+                                UnpackedConstants.MESSAGE_CONSTANT_SPACE,
+                                UnpackedConstants.MESSAGE_OUTPUT_KEYWORDS_EMPLOYEES));
+                    } else {
+                        view.showMessage(view.concatStrings(UnpackedConstants.MESSAGE_OUTPUT_KEYWORDS_LIST,
+                                UnpackedConstants.MESSAGE_CONSTANT_SPACE,
+                                UnpackedConstants.MESSAGE_OUTPUT_KEYWORDS_EMPLOYEES,
+                                UnpackedConstants.MESSAGE_CONSTANT_COLON, UnpackedConstants.MESSAGE_CONSTANT_SPACE,
+                                view.stringifyList(Arrays.asList(availableEmployees.toArray()))));
+                        int chosenId = Integer.parseInt(getUserData(scanner, UnpackedConstants.MESSAGE_INPUT_ID_EMPLOYEE,
+                                UnpackedConstants.INPUT_INTEGERS_POSITIVE_REGEXP));
+                        while (!availableEmployeesIds.contains(chosenId)) {
+                            view.showMessage(UnpackedConstants.MESSAGE_OUTPUT_WRONG_OPTION);
+                            chosenId = Integer.parseInt(getUserData(scanner, UnpackedConstants.MESSAGE_INPUT_ID_EMPLOYEE,
+                                    UnpackedConstants.INPUT_INTEGERS_POSITIVE_REGEXP));
+                        }
+                        model.attachEmployeeToManager(currentEmployee.getId(), chosenId);
+                        view.showMessage(UnpackedConstants.MESSAGE_OUTPUT_SUCCESS);
+                    }
+                }
+            } else {
+                // TODO: 17.09.2021
+                view.showMessage(UnpackedConstants.MESSAGE_OUTPUT_WRONG_OPTION);
+            }
+        }
     }
 
-    public void processManagerDetach() {
+    public void processManagerDetach(Scanner scanner) {
+        if (currentEmployee != null) {
+            if (currentEmployee instanceof Manager) {
+                    Set<Employee> availableEmployees = new HashSet<>(((Manager) currentEmployee).getWorkers());
+                    Set<Integer> availableEmployeesIds = new LinkedHashSet<>();
+                    for (Employee employee : availableEmployees) {
+                        availableEmployeesIds.add(employee.getId());
+                    }
+                    if (availableEmployees.isEmpty()) {
+                        view.showMessage(view.concatStrings(UnpackedConstants.MESSAGE_OUTPUT_KEYWORDS_LIST_EMPTY,
+                                UnpackedConstants.MESSAGE_CONSTANT_SPACE,
+                                UnpackedConstants.MESSAGE_OUTPUT_KEYWORDS_EMPLOYEES));
+                    } else {
+                        view.showMessage(view.concatStrings(UnpackedConstants.MESSAGE_OUTPUT_KEYWORDS_LIST,
+                                UnpackedConstants.MESSAGE_CONSTANT_SPACE,
+                                UnpackedConstants.MESSAGE_OUTPUT_KEYWORDS_EMPLOYEES,
+                                UnpackedConstants.MESSAGE_CONSTANT_COLON, UnpackedConstants.MESSAGE_CONSTANT_SPACE,
+                                view.stringifyList(Arrays.asList(availableEmployees.toArray()))));
+                        int chosenId = Integer.parseInt(getUserData(scanner, UnpackedConstants.MESSAGE_INPUT_ID_EMPLOYEE,
+                                UnpackedConstants.INPUT_INTEGERS_POSITIVE_REGEXP));
+                        while (!availableEmployeesIds.contains(chosenId)) {
+                            view.showMessage(UnpackedConstants.MESSAGE_OUTPUT_WRONG_OPTION);
+                            chosenId = Integer.parseInt(getUserData(scanner, UnpackedConstants.MESSAGE_INPUT_ID_EMPLOYEE,
+                                    UnpackedConstants.INPUT_INTEGERS_POSITIVE_REGEXP));
+                        }
+                        model.detachEmployeeFromManager(currentEmployee.getId(), chosenId);
+                        view.showMessage(UnpackedConstants.MESSAGE_OUTPUT_SUCCESS);
+                    }
+            } else {
+                // TODO: 17.09.2021
+                view.showMessage(UnpackedConstants.MESSAGE_OUTPUT_WRONG_OPTION);
+            }
+        }
     }
 
-    public void processEmployeeTypeChange(Scanner scanner) {
+    public boolean processEmployeeTypeChange(Scanner scanner) {
+        if (currentDepartment != null && currentEmployee != null) {
+            if (currentEmployee instanceof Manager && !((Manager) currentEmployee).getWorkers().isEmpty()) {
+                view.showMessage(UnpackedConstants.MESSAGE_OUTPUT_ERROR_MANAGER);
+                return false;
+            } else {
+                EmployeeType employeeType = getEmployeeType(scanner);
+                model.changeEmployeeType(currentDepartment, currentEmployee.getId(), employeeType);
+                view.showMessage(UnpackedConstants.MESSAGE_OUTPUT_SUCCESS);
+                return true;
+            }
+        }
+        return false;
     }
 
     public void processOfficeSave() {
@@ -349,5 +401,41 @@ public class OrganizationController {
     private String getUserData(Scanner scanner, String message, String regex) {
         return getUserData(scanner, UnpackedConstants.MESSAGE_INPUT_REQUEST, message,
                 UnpackedConstants.MESSAGE_OUTPUT_WRONG_DATA, regex);
+    }
+
+    private EmployeeType getEmployeeType(Scanner scanner) {
+        List<Integer> availablePositions = Arrays.asList(EmployeeType.WORKER.ordinal(), EmployeeType.MANAGER.ordinal(),
+                EmployeeType.OTHER.ordinal());
+
+        int chosenId;
+        view.showMessage(view.concatStrings(UnpackedConstants.MESSAGE_OUTPUT_KEYWORDS_LIST,
+                UnpackedConstants.MESSAGE_CONSTANT_COLON, UnpackedConstants.MESSAGE_CONSTANT_SPACE));
+        view.showMessage(view.concatStrings(UnpackedConstants.MESSAGE_CONSTANT_SQUARE_BRACKET_OPEN,
+                availablePositions.get(0).toString(), UnpackedConstants.MESSAGE_CONSTANT_SQUARE_BRACKET_CLOSE,
+                UnpackedConstants.MESSAGE_CONSTANT_SPACE, UnpackedConstants.MESSAGE_OUTPUT_OPTION_EMPLOYEE_WORKER));
+        view.showMessage(view.concatStrings(UnpackedConstants.MESSAGE_CONSTANT_SQUARE_BRACKET_OPEN,
+                availablePositions.get(1).toString(), UnpackedConstants.MESSAGE_CONSTANT_SQUARE_BRACKET_CLOSE,
+                UnpackedConstants.MESSAGE_CONSTANT_SPACE, UnpackedConstants.MESSAGE_OUTPUT_OPTION_EMPLOYEE_MANAGER));
+        view.showMessage(view.concatStrings(UnpackedConstants.MESSAGE_CONSTANT_SQUARE_BRACKET_OPEN,
+                availablePositions.get(2).toString(), UnpackedConstants.MESSAGE_CONSTANT_SQUARE_BRACKET_CLOSE,
+                UnpackedConstants.MESSAGE_CONSTANT_SPACE, UnpackedConstants.MESSAGE_OUTPUT_OPTION_EMPLOYEE_OTHER));
+        do {
+            chosenId = Integer.parseInt(getUserData(scanner,
+                    UnpackedConstants.MESSAGE_OUTPUT_OPTION_CHOOSE,
+                    UnpackedConstants.MESSAGE_INPUT_EMPLOYEE_TYPE,
+                    UnpackedConstants.MESSAGE_OUTPUT_WRONG_DATA,
+                    UnpackedConstants.INPUT_INTEGERS_POSITIVE_REGEXP));
+
+            if (!availablePositions.contains(chosenId)) {
+                view.showMessage(UnpackedConstants.MESSAGE_OUTPUT_WRONG_OPTION);
+            }
+
+        } while (!availablePositions.contains(chosenId));
+
+        return EmployeeType.values()[chosenId];
+    }
+
+    public Employee getCurrentEmployee() {
+        return currentEmployee;
     }
 }

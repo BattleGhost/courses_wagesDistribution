@@ -60,6 +60,6 @@ public class Manager extends Employee{
     @Override
     public String showInfo() {
         return super.showInfo() +
-                "\nManager bonus: " + additionalBonus;
+                "\nManager bonus: " + additionalBonus + "\nWorkers amount: " +  workers.size();
     }
 }

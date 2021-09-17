@@ -1,6 +1,7 @@
 package org.example.controller;
 
 import org.example.model.Model;
+import org.example.model.organization.employees.Manager;
 import org.example.view.UnpackedConstants;
 import org.example.view.View;
 
@@ -105,13 +106,15 @@ public class Controller {
                         organizationController.processEmployeeInformation();
                         break;
                     case 2:
-                        organizationController.processEmployeeTypeChange(scanner);
+                        if (organizationController.processEmployeeTypeChange(scanner)) {
+                            currentStage = Stage.DEPARTMENT;
+                        }
                         break;
                     case 3:
-                        organizationController.processManagerAttach();
+                        organizationController.processManagerAttach(scanner);
                         break;
                     case 4:
-                        organizationController.processManagerDetach();
+                        organizationController.processManagerDetach(scanner);
                         break;
                 }
                 break;
@@ -146,8 +149,10 @@ public class Controller {
             case EMPLOYEE:
                 options.put(1, UnpackedConstants.MESSAGE_OUTPUT_OPTION_INFORMATION);
                 options.put(2, UnpackedConstants.MESSAGE_OUTPUT_OPTION_EMPLOYEE_CHANGE_TYPE);
-                options.put(3, UnpackedConstants.MESSAGE_OUTPUT_OPTION_MANAGER_ATTACH);
-                options.put(4, UnpackedConstants.MESSAGE_OUTPUT_OPTION_MANAGER_DETACH);
+                if (organizationController.getCurrentEmployee() instanceof Manager) {
+                    options.put(3, UnpackedConstants.MESSAGE_OUTPUT_OPTION_MANAGER_ATTACH);
+                    options.put(4, UnpackedConstants.MESSAGE_OUTPUT_OPTION_MANAGER_DETACH);
+                }
                 options.put(0, UnpackedConstants.MESSAGE_OUTPUT_OPTION_BACK);
                 break;
         }
