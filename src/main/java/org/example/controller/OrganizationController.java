@@ -206,21 +206,48 @@ public class OrganizationController {
         String secondName = getUserData(scanner, UnpackedConstants.MESSAGE_INPUT_EMPLOYEE_NAME_SECOND,
                 UnpackedConstants.INPUT_LETTERS_REGEXP);
 
-        SimpleDateFormat sdf = new SimpleDateFormat();
-        Date birthDate;
-        Date hireDate;
+        SimpleDateFormat sdf;
+        Date birthDate = new Date();
+        Date hireDate = new Date();
+        String stringBirthDate = getUserData(scanner, UnpackedConstants.MESSAGE_INPUT_REQUEST,
+                UnpackedConstants.MESSAGE_INPUT_EMPLOYEE_DATE_BIRTHDAY, UnpackedConstants.MESSAGE_OUTPUT_WRONG_DATE,
+                UnpackedConstants.INPUT_DATE_REGEXP);
+        String stringHireDate = getUserData(scanner, UnpackedConstants.MESSAGE_INPUT_REQUEST,
+                UnpackedConstants.MESSAGE_INPUT_EMPLOYEE_DATE_HIRE, UnpackedConstants.MESSAGE_OUTPUT_WRONG_DATE,
+                UnpackedConstants.INPUT_DATE_REGEXP);
+        boolean birthDateCreated = false;
+        boolean hireDateCreated = false;
 
-        try {
-            birthDate = sdf.parse(getUserData(scanner, UnpackedConstants.MESSAGE_INPUT_REQUEST,
-                    UnpackedConstants.MESSAGE_INPUT_EMPLOYEE_DATE_BIRTHDAY, UnpackedConstants.MESSAGE_OUTPUT_WRONG_DATE,
-                    UnpackedConstants.INPUT_DATE_REGEXP));
-            hireDate = sdf.parse(getUserData(scanner, UnpackedConstants.MESSAGE_INPUT_REQUEST,
-                    UnpackedConstants.MESSAGE_INPUT_EMPLOYEE_DATE_HIRE, UnpackedConstants.MESSAGE_OUTPUT_WRONG_DATE,
-                    UnpackedConstants.INPUT_DATE_REGEXP));
-        } catch (ParseException e) {
-            view.showMessage(UnpackedConstants.MESSAGE_OUTPUT_WRONG_DATE);
-            return;
+        List<String> datePatterns = Arrays.asList("dd/MM/yyyy", "d/M/yyyy", "dd/M/yyyy", "d/MM/yyyy", "d/M/yyyy",
+                "dd/M/yy", "d/MM/yy", "dd/MM/yy", "dd.MM.yyyy", "d.M.yyyy", "dd.M.yyyy", "d.MM.yyyy", "d.M.yyyy",
+                "dd.M.yy", "d.MM.yy", "dd.MM.yy", "dd-MM-yyyy", "d-M-yyyy", "dd-M-yyyy", "d-MM-yyyy", "d-M-yyyy",
+                "dd-M-yy", "d-MM-yy", "dd-MM-yy");
+
+        for (String datePattern : datePatterns) {
+            sdf = new SimpleDateFormat(datePattern);
+            try {
+                birthDate = sdf.parse(stringBirthDate);
+            } catch (ParseException e) {
+                continue;
+            }
+            birthDateCreated = true;
+            break;
         }
+        for (String datePattern : datePatterns) {
+            sdf = new SimpleDateFormat(datePattern);
+            try {
+                hireDate = sdf.parse(stringHireDate);
+            } catch (ParseException e) {
+                continue;
+            }
+            hireDateCreated = true;
+            break;
+        }
+
+       if (!birthDateCreated || !hireDateCreated) {
+           view.showMessage(UnpackedConstants.MESSAGE_OUTPUT_WRONG_DATE);
+           return;
+       }
 
         long salary = Long.parseLong(getUserData(scanner, UnpackedConstants.MESSAGE_INPUT_EMPLOYEE_SALARY,
                 UnpackedConstants.INPUT_INTEGERS_POSITIVE_REGEXP));

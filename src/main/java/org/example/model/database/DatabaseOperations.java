@@ -9,10 +9,7 @@ import org.example.model.organization.employees.Other;
 import org.example.model.organization.employees.Worker;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,7 +31,6 @@ public class DatabaseOperations {
     }
 
     public static void update(DatabaseConnection dbc, String query) throws SQLException {
-        System.out.println(query);
         Connection connection = dbc.getConnection();
         Statement statement = connection.createStatement();
         statement.executeUpdate(query);
@@ -76,8 +72,8 @@ public class DatabaseOperations {
                         .append("'").append(employee.getFirstName()).append("'").append(", ")
                         .append("'").append(employee.getMiddleName()).append("'").append(", ")
                         .append("'").append(employee.getSecondName()).append("'").append(", ")
-                        .append("'").append(employee.getBirthDate()).append("'").append(", ")
-                        .append("'").append(employee.getHiringDate()).append("'").append(", ")
+                        .append("'").append(new Timestamp(employee.getBirthDate().getTime())).append("'").append(", ")
+                        .append("'").append(new Timestamp(employee.getHiringDate().getTime())).append("'").append(", ")
                         .append(employee.getSalary()).append(", ")
                         .append(employee.getSalaryBonus()).append(", ")
                         .append("'").append(employee.getType().name()).append("'").append("),");
