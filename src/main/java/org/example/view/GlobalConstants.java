@@ -45,6 +45,9 @@ public interface GlobalConstants {
     String MESSAGE_OUTPUT_OPTION_MANAGER_ATTACH = "message.output.option.manager.attach";
     String MESSAGE_OUTPUT_OPTION_MANAGER_DETACH = "message.output.option.manager.detach";
     String MESSAGE_OUTPUT_OPTION_EMPLOYEE_CHANGE_TYPE = "message.output.option.employee.change.type";
+    String MESSAGE_OUTPUT_OPTION_EMPLOYEE_WORKER = "message.output.option.employee.worker";
+    String MESSAGE_OUTPUT_OPTION_EMPLOYEE_MANAGER = "message.output.option.employee.manager";
+    String MESSAGE_OUTPUT_OPTION_EMPLOYEE_OTHER = "message.output.option.employee.other";
 
     String MESSAGE_OUTPUT_KEYWORDS_LIST = "message.output.keywords.list";
     String MESSAGE_OUTPUT_KEYWORDS_LIST_EMPTY = "message.output.keywords.list.empty";

@@ -66,7 +66,7 @@ public abstract class Employee {
 
     @Override
     public String toString() {
-        return id + " | " + firstName + " " + secondName + " " + middleName;
+        return id + " | " + firstName + " " + middleName+ " " + secondName;
     }
 
     public int getId() {
@@ -169,4 +169,13 @@ public abstract class Employee {
     public int hashCode() {
         return Objects.hash(id);
     }
+
+    public String showInfo() {
+        return "Full name: " + firstName + " " + middleName+ " " + secondName +
+                "\nBirthday: " + birthDate +
+                "\nHire date: " + hiringDate +
+                "\nSalary: " + salary +
+                "\nBonus: " + salaryBonus;
+    }
+
 }

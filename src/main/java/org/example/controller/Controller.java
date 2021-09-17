@@ -65,7 +65,10 @@ public class Controller {
                         organizationController.processOfficeRecalculation(scanner);
                         break;
                     case 4:
-                        organizationController.processDepartmentAddition();
+                        organizationController.processDepartmentAddition(scanner);
+                        break;
+                    case 5:
+                        organizationController.processOfficeSave();
                         break;
                 }
                 break;
@@ -78,17 +81,18 @@ public class Controller {
                         organizationController.processDepartmentsInformation();
                         break;
                     case 2:
-                        organizationController.processEmployeeShowcase();
-                        currentStage = Stage.EMPLOYEE;
+                        if (organizationController.processEmployeeShowcase(scanner)) {
+                            currentStage = Stage.EMPLOYEE;
+                        }
                         break;
                     case 3:
                         organizationController.processDepartmentRecalculation(scanner);
                         break;
                     case 4:
-                        organizationController.processEmployeeAddition();
+                        organizationController.processEmployeeAddition(scanner);
                         break;
                     case 5:
-                        organizationController.processEmployeeDeletion();
+                        organizationController.processEmployeeDeletion(scanner);
                         break;
                 }
                 break;
@@ -101,9 +105,12 @@ public class Controller {
                         organizationController.processEmployeeInformation();
                         break;
                     case 2:
-                        organizationController.processManagerAttach();
+                        organizationController.processEmployeeTypeChange(scanner);
                         break;
                     case 3:
+                        organizationController.processManagerAttach();
+                        break;
+                    case 4:
                         organizationController.processManagerDetach();
                         break;
                 }
@@ -125,6 +132,7 @@ public class Controller {
                 options.put(2, UnpackedConstants.MESSAGE_OUTPUT_OPTION_SHOW_DEPARTMENTS);
                 options.put(3, UnpackedConstants.MESSAGE_OUTPUT_OPTION_RECALCULATION);
                 options.put(4, UnpackedConstants.MESSAGE_OUTPUT_OPTION_ADD_DEPARTMENT);
+                options.put(5, UnpackedConstants.MESSAGE_OUTPUT_OPTION_SAVE);
                 options.put(0, UnpackedConstants.MESSAGE_OUTPUT_OPTION_BACK);
                 break;
             case DEPARTMENT:
@@ -136,9 +144,10 @@ public class Controller {
                 options.put(0, UnpackedConstants.MESSAGE_OUTPUT_OPTION_BACK);
                 break;
             case EMPLOYEE:
-                options.put(1, UnpackedConstants.MESSAGE_OUTPUT_OPTION_EMPLOYEE_CHANGE_TYPE);
-                options.put(2, UnpackedConstants.MESSAGE_OUTPUT_OPTION_MANAGER_ATTACH);
-                options.put(3, UnpackedConstants.MESSAGE_OUTPUT_OPTION_MANAGER_DETACH);
+                options.put(1, UnpackedConstants.MESSAGE_OUTPUT_OPTION_INFORMATION);
+                options.put(2, UnpackedConstants.MESSAGE_OUTPUT_OPTION_EMPLOYEE_CHANGE_TYPE);
+                options.put(3, UnpackedConstants.MESSAGE_OUTPUT_OPTION_MANAGER_ATTACH);
+                options.put(4, UnpackedConstants.MESSAGE_OUTPUT_OPTION_MANAGER_DETACH);
                 options.put(0, UnpackedConstants.MESSAGE_OUTPUT_OPTION_BACK);
                 break;
         }

@@ -98,6 +98,16 @@ public class Model {
         }
     }
 
+    public void removeEmployeeFromDepartment(int departmentId, int employeeId) {
+        for (Department department : office.getDepartmentSet()) {
+            if (department.getDepartmentId() == departmentId) {
+                Organization.removeEmployee(department, employeeId);
+                Organization.removeEmployee(office, employeeId);
+                break;
+            }
+        }
+    }
+
     public void addWorkerToDepartment(String firstName, String middleName, String secondName, Date birthDate,
                                       Date hiringDate, long salary, long salaryBonus, int departmentId) {
         addEmployeeToDepartment(departmentId, new Worker(employeeIncrement++, firstName, middleName, secondName,

@@ -41,6 +41,9 @@ public class UnpackedConstants {
     public static String MESSAGE_OUTPUT_OPTION_MANAGER_ATTACH;
     public static String MESSAGE_OUTPUT_OPTION_MANAGER_DETACH;
     public static String MESSAGE_OUTPUT_OPTION_EMPLOYEE_CHANGE_TYPE;
+    public static String MESSAGE_OUTPUT_OPTION_EMPLOYEE_WORKER;
+    public static String MESSAGE_OUTPUT_OPTION_EMPLOYEE_MANAGER;
+    public static String MESSAGE_OUTPUT_OPTION_EMPLOYEE_OTHER;
 
     public static String MESSAGE_OUTPUT_KEYWORDS_LIST;
     public static String MESSAGE_OUTPUT_KEYWORDS_LIST_EMPTY;
@@ -126,6 +129,12 @@ public class UnpackedConstants {
                 view.getTextFromBundle(GlobalConstants.MESSAGE_OUTPUT_OPTION_MANAGER_DETACH);
         MESSAGE_OUTPUT_OPTION_EMPLOYEE_CHANGE_TYPE =
                 view.getTextFromBundle(GlobalConstants.MESSAGE_OUTPUT_OPTION_EMPLOYEE_CHANGE_TYPE);
+        MESSAGE_OUTPUT_OPTION_EMPLOYEE_WORKER =
+                view.getTextFromBundle(GlobalConstants.MESSAGE_OUTPUT_OPTION_EMPLOYEE_WORKER);
+        MESSAGE_OUTPUT_OPTION_EMPLOYEE_MANAGER =
+                view.getTextFromBundle(GlobalConstants.MESSAGE_OUTPUT_OPTION_EMPLOYEE_MANAGER);
+        MESSAGE_OUTPUT_OPTION_EMPLOYEE_OTHER =
+                view.getTextFromBundle(GlobalConstants.MESSAGE_OUTPUT_OPTION_EMPLOYEE_OTHER);
         MESSAGE_OUTPUT_KEYWORDS_LIST = view.getTextFromBundle(GlobalConstants.MESSAGE_OUTPUT_KEYWORDS_LIST);
         MESSAGE_OUTPUT_KEYWORDS_LIST_EMPTY = view.getTextFromBundle(GlobalConstants.MESSAGE_OUTPUT_KEYWORDS_LIST_EMPTY);
         MESSAGE_OUTPUT_KEYWORDS_OFFICES = view.getTextFromBundle(GlobalConstants.MESSAGE_OUTPUT_KEYWORDS_OFFICES);

@@ -5,9 +5,12 @@ import org.example.model.organization.Department;
 import org.example.model.organization.Office;
 import org.example.model.organization.RecalculationScheme;
 import org.example.model.organization.employees.Employee;
+import org.example.model.organization.employees.EmployeeType;
 import org.example.view.UnpackedConstants;
 import org.example.view.View;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class OrganizationController {
@@ -138,28 +141,170 @@ public class OrganizationController {
         }
     }
 
-    public void processDepartmentAddition() {
+    public void processDepartmentAddition(Scanner scanner) {
+        String departmentName = getUserData(scanner, UnpackedConstants.MESSAGE_INPUT_DEPARTMENT_NAME,
+                UnpackedConstants.INPUT_LETTERS_REGEXP);
+        long salaryFund = Long.parseLong(getUserData(scanner, UnpackedConstants.MESSAGE_INPUT_OFFICE_FUND,
+                UnpackedConstants.INPUT_INTEGERS_POSITIVE_REGEXP));
+        long defaultBonus = Long.parseLong(getUserData(scanner, UnpackedConstants.MESSAGE_INPUT_OFFICE_BONUS_EMPLOYEE,
+                UnpackedConstants.INPUT_INTEGERS_POSITIVE_REGEXP));
+        long defaultManagerBonus = Long.parseLong(getUserData(scanner,
+                UnpackedConstants.MESSAGE_INPUT_OFFICE_BONUS_MANAGER,
+                UnpackedConstants.INPUT_INTEGERS_POSITIVE_REGEXP));
+        model.createDepartmentInOffice(salaryFund, defaultBonus, defaultManagerBonus, departmentName);
     }
 
     public void processDepartmentsInformation() {
+        if (currentDepartment != null) {
+            view.indentLines(1);
+            view.showMessage(currentDepartment.showInfo());
+            view.indentLines(1);
+        }
     }
 
-    public void processEmployeeShowcase() {
+    public boolean processEmployeeShowcase(Scanner scanner) {
+        if (currentDepartment != null) {
+            Set<Employee> availableEmployees = currentDepartment.getEmployeeSet();
+            Set<Integer> availableEmployeesIds = new LinkedHashSet<>();
+            for (Employee employee: availableEmployees) {
+                availableEmployeesIds.add(employee.getId());
+            }
+            if (availableEmployees.isEmpty()) {
+                view.showMessage(view.concatStrings(UnpackedConstants.MESSAGE_OUTPUT_KEYWORDS_LIST_EMPTY,
+                        UnpackedConstants.MESSAGE_CONSTANT_SPACE, UnpackedConstants.MESSAGE_OUTPUT_KEYWORDS_EMPLOYEES));
+                return false;
+            } else {
+                view.showMessage(view.concatStrings(UnpackedConstants.MESSAGE_OUTPUT_KEYWORDS_LIST,
+                        UnpackedConstants.MESSAGE_CONSTANT_SPACE, UnpackedConstants.MESSAGE_OUTPUT_KEYWORDS_EMPLOYEES,
+                        UnpackedConstants.MESSAGE_CONSTANT_COLON, UnpackedConstants.MESSAGE_CONSTANT_SPACE,
+                        view.stringifyList(Arrays.asList(availableEmployees.toArray()))));
+                int chosenId = Integer.parseInt(getUserData(scanner, UnpackedConstants.MESSAGE_INPUT_ID_EMPLOYEE,
+                        UnpackedConstants.INPUT_INTEGERS_POSITIVE_REGEXP));
+                while (!availableEmployeesIds.contains(chosenId)) {
+                    view.showMessage(UnpackedConstants.MESSAGE_OUTPUT_WRONG_OPTION);
+                    chosenId = Integer.parseInt(getUserData(scanner, UnpackedConstants.MESSAGE_INPUT_ID_EMPLOYEE,
+                            UnpackedConstants.INPUT_INTEGERS_POSITIVE_REGEXP));
+                }
+                for (Employee employee: availableEmployees) {
+                    if (employee.getId() == chosenId) {
+                        currentEmployee = employee;
+                        break;
+                    }
+                }
+                return true;
+            }
+        } else {
+            return false;
+        }
     }
 
-    public void processEmployeeAddition() {
+    public void processEmployeeAddition(Scanner scanner) {
+        String firstName = getUserData(scanner, UnpackedConstants.MESSAGE_INPUT_EMPLOYEE_NAME_FIRST,
+                UnpackedConstants.INPUT_LETTERS_REGEXP);
+        String middleName = getUserData(scanner, UnpackedConstants.MESSAGE_INPUT_EMPLOYEE_NAME_MIDDLE,
+                UnpackedConstants.INPUT_LETTERS_REGEXP);
+        String secondName = getUserData(scanner, UnpackedConstants.MESSAGE_INPUT_EMPLOYEE_NAME_SECOND,
+                UnpackedConstants.INPUT_LETTERS_REGEXP);
+
+        SimpleDateFormat sdf = new SimpleDateFormat();
+        Date birthDate;
+        Date hireDate;
+
+        try {
+            birthDate = sdf.parse(getUserData(scanner, UnpackedConstants.MESSAGE_INPUT_REQUEST,
+                    UnpackedConstants.MESSAGE_INPUT_EMPLOYEE_DATE_BIRTHDAY, UnpackedConstants.MESSAGE_OUTPUT_WRONG_DATE,
+                    UnpackedConstants.INPUT_DATE_REGEXP));
+            hireDate = sdf.parse(getUserData(scanner, UnpackedConstants.MESSAGE_INPUT_REQUEST,
+                    UnpackedConstants.MESSAGE_INPUT_EMPLOYEE_DATE_HIRE, UnpackedConstants.MESSAGE_OUTPUT_WRONG_DATE,
+                    UnpackedConstants.INPUT_DATE_REGEXP));
+        } catch (ParseException e) {
+            view.showMessage(UnpackedConstants.MESSAGE_OUTPUT_WRONG_DATE);
+            return;
+        }
+
+        long salary = Long.parseLong(getUserData(scanner, UnpackedConstants.MESSAGE_INPUT_EMPLOYEE_SALARY,
+                UnpackedConstants.INPUT_INTEGERS_POSITIVE_REGEXP));
+
+        List<Integer> availablePositions = Arrays.asList(EmployeeType.WORKER.ordinal(), EmployeeType.MANAGER.ordinal(),
+                EmployeeType.OTHER.ordinal());
+
+        int chosenId;
+        view.showMessage(view.concatStrings(UnpackedConstants.MESSAGE_OUTPUT_KEYWORDS_LIST,
+                UnpackedConstants.MESSAGE_CONSTANT_COLON, UnpackedConstants.MESSAGE_CONSTANT_SPACE));
+        view.showMessage(view.concatStrings(UnpackedConstants.MESSAGE_CONSTANT_SQUARE_BRACKET_OPEN,
+                availablePositions.get(0).toString(), UnpackedConstants.MESSAGE_CONSTANT_SQUARE_BRACKET_CLOSE,
+                UnpackedConstants.MESSAGE_CONSTANT_SPACE, UnpackedConstants.MESSAGE_OUTPUT_OPTION_EMPLOYEE_WORKER));
+        view.showMessage(view.concatStrings(UnpackedConstants.MESSAGE_CONSTANT_SQUARE_BRACKET_OPEN,
+                availablePositions.get(1).toString(), UnpackedConstants.MESSAGE_CONSTANT_SQUARE_BRACKET_CLOSE,
+                UnpackedConstants.MESSAGE_CONSTANT_SPACE, UnpackedConstants.MESSAGE_OUTPUT_OPTION_EMPLOYEE_MANAGER));
+        view.showMessage(view.concatStrings(UnpackedConstants.MESSAGE_CONSTANT_SQUARE_BRACKET_OPEN,
+                availablePositions.get(2).toString(), UnpackedConstants.MESSAGE_CONSTANT_SQUARE_BRACKET_CLOSE,
+                UnpackedConstants.MESSAGE_CONSTANT_SPACE, UnpackedConstants.MESSAGE_OUTPUT_OPTION_EMPLOYEE_OTHER));
+        do {
+            chosenId = Integer.parseInt(getUserData(scanner,
+                    UnpackedConstants.MESSAGE_OUTPUT_OPTION_CHOOSE,
+                    UnpackedConstants.MESSAGE_INPUT_EMPLOYEE_TYPE,
+                    UnpackedConstants.MESSAGE_OUTPUT_WRONG_DATA,
+                    UnpackedConstants.INPUT_INTEGERS_POSITIVE_REGEXP));
+
+            if (!availablePositions.contains(chosenId)) {
+                view.showMessage(UnpackedConstants.MESSAGE_OUTPUT_WRONG_OPTION);
+            }
+
+        } while (!availablePositions.contains(chosenId));
+
+        EmployeeType employeeType = EmployeeType.values()[chosenId];
+
+        if (currentDepartment != null) {
+            switch (employeeType) {
+                case WORKER:
+                    model.addWorkerToDepartment(firstName, middleName, secondName, birthDate, hireDate, salary,
+                            0, currentDepartment.getDepartmentId());
+                    break;
+                case MANAGER:
+                    model.addManagerToDepartment(firstName, middleName, secondName, birthDate, hireDate, salary,
+                            0, currentDepartment.getDepartmentId());
+                    break;
+                case OTHER:
+                    String description = getUserData(scanner, UnpackedConstants.MESSAGE_INPUT_EMPLOYEE_NAME_FIRST,
+                            UnpackedConstants.INPUT_LETTERS_REGEXP);
+                    model.addOtherToDepartment(firstName, middleName, secondName, birthDate, hireDate, salary,
+                            0, currentDepartment.getDepartmentId(), description);
+                    break;
+            }
+            view.showMessage(UnpackedConstants.MESSAGE_OUTPUT_SUCCESS);
+            view.indentLines(1);
+        }
     }
 
-    public void processEmployeeDeletion() {
+    public void processEmployeeDeletion(Scanner scanner) {
+        if (processEmployeeShowcase(scanner) && currentEmployee != null) {
+            model.removeEmployeeFromDepartment(currentDepartment.getDepartmentId(), currentEmployee.getId());
+        }
     }
 
     public void processEmployeeInformation() {
+        if (currentEmployee != null) {
+            view.indentLines(1);
+            view.showMessage(currentEmployee.showInfo());
+            view.indentLines(1);
+        }
     }
 
     public void processManagerAttach() {
+
     }
 
     public void processManagerDetach() {
+    }
+
+    public void processEmployeeTypeChange(Scanner scanner) {
+    }
+
+    public void processOfficeSave() {
+        model.save();
+        view.showMessage(UnpackedConstants.MESSAGE_OUTPUT_SUCCESS);
+        view.indentLines(1);
     }
 
     private String getUserData(Scanner scanner, String requestMessage, String message, String errorMessage,

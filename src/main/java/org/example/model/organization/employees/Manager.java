@@ -56,4 +56,10 @@ public class Manager extends Employee{
     public void setAdditionalBonus(long additionalBonus) {
         this.additionalBonus = additionalBonus;
     }
+
+    @Override
+    public String showInfo() {
+        return super.showInfo() +
+                "\nManager bonus: " + additionalBonus;
+    }
 }

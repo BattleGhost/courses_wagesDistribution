@@ -38,4 +38,13 @@ public class Department extends Office {
     public String toString() {
         return "("+departmentId+") " + departmentName;
     }
+
+    public String showInfo() {
+        return "Department #" + departmentId +
+                "\nDepartment name: \"" +  departmentName + "\"" +
+                "\nSalary Fund: " + salaryFund +
+                "\nDefault Employee Bonus: " + defaultBonus +
+                "\nDefault Manager Bonus: " + defaultManagerBonus +
+                "\nEmployees amount: " + employeeSet.size();
+    }
 }

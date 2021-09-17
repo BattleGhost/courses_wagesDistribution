@@ -28,4 +28,10 @@ public class Other extends Employee{
     public void setDescription(String description) {
         this.description = description;
     }
+
+    @Override
+    public String showInfo() {
+        return super.showInfo() +
+                "\n Additional information: " + description;
+    }
 }
